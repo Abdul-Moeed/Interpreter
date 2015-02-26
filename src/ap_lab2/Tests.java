@@ -13,7 +13,7 @@ public class Tests {
         fr.read_file("unit_test_1.txt");
         //fr.dump_file();
         Interpreter intr = new Interpreter();
-        intr.variables = new HashMap<String, Float>();
+        intr.variables = new HashMap<String, Generics>();
         intr.exec_program(fr);
     }
     
@@ -22,7 +22,7 @@ public class Tests {
         fr.read_file("unit_test_2.txt");
         //fr.dump_file();
         Interpreter intr = new Interpreter();
-        intr.variables = new HashMap<String, Float>();
+        intr.variables = new HashMap<String, Generics>();
         intr.exec_program(fr);
     }
     
@@ -31,7 +31,7 @@ public class Tests {
         fr.read_file("unit_test_3.txt");
         //fr.dump_file();
         Interpreter intr = new Interpreter();
-        intr.variables = new HashMap<String, Float>();
+        intr.variables = new HashMap<String, Generics>();
         intr.exec_program(fr);
     }
 }

@@ -126,8 +126,8 @@ public class PostFixExpression {
 	}
 	
 	public float postFixValue(String s){
+            
 		//TODO implement this method
-		//String s=getPostFix();
 		StackArray numStack= new StackArray(s.length());
 		char current;
 		float operand1,operand2;

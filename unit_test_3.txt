@@ -1,4 +1,8 @@
-Let x = 10.2
-Let y = 20.0
-x = x + y
+Let x = 5.5
+Let y = 6.6
+x = x + y - 6 / 2
 print x
+Let f = "Abdul"
+Let l = "Moeed"
+f = f + l
+print f

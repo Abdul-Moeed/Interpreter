@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class Interpreter {
 
-    Map <String, Float> variables;
+    Map <String, Generics> variables;
     
     public static void main(String[] args) throws IOException {
         Tests run_test = new Tests();
@@ -45,7 +45,16 @@ public class Interpreter {
         
         //for init line
         if (tokens[0].equalsIgnoreCase("Let")){
-            variables.put(tokens[1], Float.parseFloat(tokens[3]));
+            Generics obj = new Generics();
+            obj.value = tokens[3];
+            
+            if(tokens[3].contains(".")) 
+                obj.type = "float";
+            else if(tokens[3].contains("\"")) 
+                obj.type = "string";
+            else
+                obj.type = "int";   
+            variables.put(tokens[1], obj);
         }
         
         //for print line
@@ -58,8 +67,15 @@ public class Interpreter {
             else if(!variables.containsKey(tokens[1])) {
                 return -2;
             }
-            else
-                System.out.println(variables.get(tokens[1]));
+            else{
+                Generics printable = new Generics();
+                printable = variables.get(tokens[1]);
+                String stripped = printable.value;
+                if(printable.type.equals("string")){
+                    stripped = stripped.replaceAll("\"", "");
+                }
+                System.out.println(stripped);
+            }
         }
         
         //for assignment/operation line
@@ -67,6 +83,7 @@ public class Interpreter {
             if(!variables.containsKey(tokens[0]))
                 return -2;
             
+            boolean is_string = false;
             infix.append("(");
             for(int i=2;i<tokens.length;i++){
                 if(tokens[i].equals("+") || tokens[i].equals("-") || tokens[i].equals("/") || tokens[i].equals("*") || tokens[i].equals("(") || tokens[i].equals(")")){
@@ -76,16 +93,48 @@ public class Interpreter {
                     infix.append(tokens[i]);
                 }
                 else if(variables.containsKey(tokens[i])) {
-                    infix.append(Float.toString(variables.get(tokens[i])));
+                    Generics gen = new Generics();
+                    gen = variables.get(tokens[i]);
+                    if(gen.type.equals("int")) {
+                        infix.append(gen.value);
+                        infix.append(".0");
+                    }
+                    else if(gen.type.equals("float")) {
+                        infix.append(gen.value);
+                    }
+                    else{
+                        infix.append(gen.value);
+                        is_string = true;
+                    }
                 }
                 else {
                     return -2;
                 }
             }
-            infix.append(")");
+            infix.append(")");            
             String temp = infix.toString();
+            Generics gen2 = variables.get(tokens[0]);
+            if(is_string){
+                temp = temp.replaceAll("\"", "");
+                temp = temp.replace("+","");
+                temp = temp.replace("(","");
+                temp = temp.replace(")","");
+                temp = temp.replace(" ","");
+                gen2.value = temp;
+                variables.put(tokens[0],gen2);
+                return 1;
+            }
             exp.PostFixExpression_setter(temp);
-            variables.put(tokens[0], exp.postFixValue(exp.getPostFix()));
+            float result = exp.postFixValue(exp.getPostFix());
+            
+            if(gen2.type.equals("int")){
+                gen2.value = Integer.toString((int)result);
+                variables.put(tokens[0], gen2);
+            }
+            else {
+                gen2.value = Float.toString(result);
+                variables.put(tokens[0], gen2);
+            }
         }
         return 1;
     }
