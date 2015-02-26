@@ -1,0 +1,4 @@
+Let x = 10.2
+Let y = 20.0
+x = x + y
+print x

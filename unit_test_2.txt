@@ -1,0 +1,4 @@
+Let x = 10
+Let y = 20
+y+x = x + y
+print x

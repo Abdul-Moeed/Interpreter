@@ -1,0 +1,4 @@
+Let x = 1
+Let y = 5
+x = x + y
+print x
